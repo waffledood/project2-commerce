@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:createListing' %}">Create a Listing</a>
+            </li>
+
+            <li>
+                <a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
+            </li>
+        </ul>
+    
+        <br>
+        <br>
+
+        
+        <h2>Active Listings</h2>
+        
+        {% for auction in auctions %}
+            <li> <a href="{% url 'auctions:listing' auction.id %}">Auction {{ auction.id }}:</a> {{ auction.title }} by {{ auction.user }} for SGD${{ auction.price }} </li>
+        {% endfor %}
+
+
+    {% endif %}
+
+    
+{% endblock %}
+
+<!-- <a href="{% url 'auctions:createListing' %}">Create a Listing</a> -->
