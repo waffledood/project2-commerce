@@ -82,7 +82,15 @@ def listing(request, listing_id):
 
 @login_required(login_url='/accounts/login/')
 def watchlist(request):
-    return render(request, "auctions/watchlist.html")
+    #return render(request, "auctions/watchlist.html")
+    if request.method=="POST":
+        listing = Auction.objects.get(pk=request.POST["listingID"])
+        user = User.objects.get(pk=int(request.POST["user"]))
+        user.watchlist.add(listing)
+        return HttpResponseRedirect(reverse("auctions:index"))
+
+    else:
+        return render(request, "auctions/watchlist.html")
 
 
 def login_view(request):

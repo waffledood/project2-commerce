@@ -19,6 +19,14 @@
 
     <img src="https://openthread.google.cn/images/ot-contrib-google.png" alt="Italian Trulli">
 
+    <form action="{% url 'auctions:watchlist' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="hidden" name="listingID" value=listing.id>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Add To Watchlist">
+    </form>
+
 
 {% endblock %}
 

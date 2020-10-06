@@ -22,6 +22,7 @@ class Auction(models.Model):
     description = models.TextField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
     #user_watchlist = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
+    watchlist = models.ManyToManyField(User, blank=True, related_name="watchlist")
     price = models.IntegerField() # initial price
     picture = models.URLField()
     category = models.CharField(max_length=32)

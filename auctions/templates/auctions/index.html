@@ -3,20 +3,8 @@
 {% block body %}
 
     {% if user.is_authenticated %}
-
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'auctions:createListing' %}">Create a Listing</a>
-            </li>
-
-            <li>
-                <a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
-            </li>
-        </ul>
     
         <br>
-        <br>
-
         
         <h2>Active Listings</h2>
         
