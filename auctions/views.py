@@ -73,10 +73,16 @@ def listing(request, listing_id):
 
     listing = Auction.objects.get(pk=listing_id)
 
-    # title, desc, user, price, cat
+    if request.user in listing.watchlist.all():
+        in_watchlist = True
+    else:
+        in_watchlist = False 
+
+    #print (in_watchlist, "ANSWER IS HEREEEE")
 
     return render(request, "auctions/listing.html", {
-        "listing": listing
+        "listing": listing,
+        "in_watchlist": in_watchlist
     })
 
 
@@ -85,9 +91,18 @@ def watchlist(request):
     #return render(request, "auctions/watchlist.html")
     if request.method=="POST":
         listing = Auction.objects.get(pk=request.POST["listingID"])
-        user = User.objects.get(pk=int(request.POST["user"]))
+
+        print("***")
+        print(request.POST)
+        #print( int(request.POST["user"]) )
+
+        user = request.user
+        user = User.objects.get(pk=int(user.id))
+        #user = User.objects.get(pk=int(request.POST["user"]))
+        #user = User.objects.get(pk=int(request.POST.get("user")))
         user.watchlist.add(listing)
-        return HttpResponseRedirect(reverse("auctions:index"))
+        #return HttpResponseRedirect(reverse("auctions:index"))
+        return HttpResponseRedirect(reverse("auctions:listing", args=(request.POST["listingID"],)))
 
     else:
         return render(request, "auctions/watchlist.html")
