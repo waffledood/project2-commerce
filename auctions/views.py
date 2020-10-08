@@ -113,6 +113,8 @@ def watchlist_remove(request):
     if request.method=="POST":
         listing = Auction.objects.get(pk=request.POST["listingID"])
 
+        # https://docs.djangoproject.com/en/3.1/ref/models/relations/#django.db.models.fields.related.RelatedManager.remove
+
         user = request.user.id
         listing.watchlist.remove(user)
         return HttpResponseRedirect(reverse("auctions:listing", args=(request.POST["listingID"],)))
