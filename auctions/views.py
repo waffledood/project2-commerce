@@ -108,6 +108,18 @@ def watchlist(request):
         return render(request, "auctions/watchlist.html")
 
 
+@login_required(login_url='/accounts/login/')
+def watchlist_remove(request):
+    if request.method=="POST":
+        listing = Auction.objects.get(pk=request.POST["listingID"])
+
+        user = request.user.id
+        listing.watchlist.remove(user)
+        return HttpResponseRedirect(reverse("auctions:listing", args=(request.POST["listingID"],)))
+    else:
+        return render(request, "auctions/watchlist.html")
+
+
 def login_view(request):
     if request.method == "POST":
 

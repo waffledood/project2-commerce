@@ -16,9 +16,18 @@
     <img src={{listing.picture}} alt="img">
 
     {% if in_watchlist %}
-        <h3>Already in watchlist</h3>
+        <h3>Remove from watchlist</h3>
+
+        <form action="{% url 'auctions:watchlist_remove' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="hidden" name="listingID" value="{{listing.id}}">
+                <input type="hidden" name="user" value="{{user.id}}">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Remove From Watchlist">
+        </form>
     {% else %}
-        <h3>Not in watchlist</h3>
+        <h3>Add to watchlist</h3>
         
         <form action="{% url 'auctions:watchlist' %}" method="post">
             {% csrf_token %}
