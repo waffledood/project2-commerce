@@ -13,6 +13,17 @@
 
     Price: {{ listing.price }}
 
+    <form action="{% url 'auctions:bid' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="hidden" name="listingID" value="{{listing.id}}">
+            <input type="hidden" name="user" value="{{user.id}}">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Bid">
+    </form>
+
+    <br>
+
     <img src={{listing.picture}} alt="img">
 
     {% if in_watchlist %}
@@ -47,3 +58,8 @@
 {% endblock %}
 
 <!-- https://docs.djangoproject.com/en/3.1/howto/static-files/ --> 
+
+<!--
+    https://getbootstrap.com/docs/4.5/components/media-object/
+
+-->

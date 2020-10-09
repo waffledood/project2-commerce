@@ -92,6 +92,11 @@ def categories(request):
 
 
 @login_required(login_url='/accounts/login/')
+def bid(request):
+    pass
+
+
+@login_required(login_url='/accounts/login/')
 def watchlist(request):
 
     user = request.user 
