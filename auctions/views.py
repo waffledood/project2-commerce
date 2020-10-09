@@ -87,7 +87,24 @@ def listing(request, listing_id):
 
 
 @login_required(login_url='/accounts/login/')
+def categories(request):
+    pass
+
+
+@login_required(login_url='/accounts/login/')
 def watchlist(request):
+
+    user = request.user 
+    
+    watchlist = user.watchlist.all()
+
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": watchlist
+    })
+
+
+@login_required(login_url='/accounts/login/')
+def watchlist_add(request):
     #return render(request, "auctions/watchlist.html")
     if request.method=="POST":
         listing = Auction.objects.get(pk=request.POST["listingID"])

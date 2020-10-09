@@ -29,7 +29,7 @@
     {% else %}
         <h3>Add to watchlist</h3>
         
-        <form action="{% url 'auctions:watchlist' %}" method="post">
+        <form action="{% url 'auctions:watchlist_add' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <input type="hidden" name="listingID" value="{{listing.id}}">
