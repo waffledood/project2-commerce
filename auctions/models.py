@@ -24,6 +24,7 @@ class Auction(models.Model):
     #user_watchlist = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
     watchlist = models.ManyToManyField(User, blank=True, related_name="watchlist")
     price = models.DecimalField(max_digits=5, decimal_places=2) # initial price
+    bid = models.DecimalField(max_digits=5, decimal_places=2)
     bidder = models.ManyToManyField(User, blank=True, related_name="bidder")
     picture = models.URLField()
     category = models.CharField(max_length=32)

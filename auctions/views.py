@@ -93,7 +93,27 @@ def categories(request):
 
 @login_required(login_url='/accounts/login/')
 def bid(request):
-    pass
+    #pass
+    if request.method=="POST":
+
+        bid = request.POST["Bid"]
+        user_listing = request.POST["user"]
+        listing_id = request.POST["listingID"]
+
+        user_bidding = request.user
+
+        listing = Auction.objects.get(pk=listing_id)
+
+        if float(bid) >= listing.price and float(bid) > listing.bid:
+            
+
+            return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+
+        else:
+            return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+        
+
+
 
 
 @login_required(login_url='/accounts/login/')

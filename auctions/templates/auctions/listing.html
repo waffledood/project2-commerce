@@ -16,6 +16,7 @@
     <form action="{% url 'auctions:bid' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
+            <input type="text" name="Bid" value="">
             <input type="hidden" name="listingID" value="{{listing.id}}">
             <input type="hidden" name="user" value="{{user.id}}">
         </div>
