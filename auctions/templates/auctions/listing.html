@@ -2,6 +2,12 @@
 
 {% block body %}
 
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            Incorrect bid placed
+        </div>
+    {% endif %}
+
     Title: {{ listing.title }}
 
     <br>
@@ -11,17 +17,31 @@
 
     <br>
 
+    Description: {{ listing.description }}
+
+    <br>
+
     Price: {{ listing.price }}
 
-    <form action="{% url 'auctions:bid' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input type="text" name="Bid" value="">
-            <input type="hidden" name="listingID" value="{{listing.id}}">
-            <input type="hidden" name="user" value="{{user.id}}">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Bid">
-    </form>
+    {% if listing_owner %}
+        <h2>Close the auction</h2>
+    {% else %}
+        {% if listing.active %}
+            <form action="{% url 'auctions:bid' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="Bid" value="">
+                    <input type="hidden" name="listingID" value="{{listing.id}}">
+                    <input type="hidden" name="user" value="{{listing.user.id}}">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Bid">
+            </form>
+        {% else %}
+            <h2>Listing closed</h2>
+        {% endif %}
+    {% endif %}
+
+    
 
     <br>
 

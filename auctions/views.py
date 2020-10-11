@@ -46,7 +46,7 @@ def createListing(request):
 
             #auction = Auction.objects.create(title, description, 1, price, cat)
             
-            user = User.objects.get(pk=1)
+            user = User.objects.get(pk=request.user.id)
             #user = User.objects.get(pk=userGlobal.id)
 
             auction = Auction.create(title, description, user, price, picture, cat)
@@ -79,10 +79,12 @@ def listing(request, listing_id):
         in_watchlist = False 
 
     #print (in_watchlist, "ANSWER IS HEREEEE")
+    print("Active:", listing.active)
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
-        "in_watchlist": in_watchlist
+        "in_watchlist": in_watchlist,
+        "listing_owner": listing.user.id == request.user.id
     })
 
 
@@ -102,18 +104,22 @@ def bid(request):
 
         user_bidding = request.user
 
+        print("user of listing:", user_listing)
+        print("user bidding:", user_bidding)
+
         listing = Auction.objects.get(pk=listing_id)
 
         if float(bid) >= listing.price and float(bid) > listing.bid:
-            
 
             return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 
         else:
-            return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
-        
-
-
+            return render(request, "auctions/listing.html", {
+                "listing": Auction.objects.get(pk=listing_id),
+                "in_watchlist": user_bidding in listing.watchlist.all(),
+                "error": True
+            })
+            #return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 
 
 @login_required(login_url='/accounts/login/')

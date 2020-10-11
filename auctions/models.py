@@ -24,10 +24,11 @@ class Auction(models.Model):
     #user_watchlist = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
     watchlist = models.ManyToManyField(User, blank=True, related_name="watchlist")
     price = models.DecimalField(max_digits=5, decimal_places=2) # initial price
-    bid = models.DecimalField(max_digits=5, decimal_places=2)
+    bid = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     bidder = models.ManyToManyField(User, blank=True, related_name="bidder")
     picture = models.URLField()
     category = models.CharField(max_length=32)
+    active = models.BooleanField(default=True) # the status of the listing, if it's active or not 
 
     @classmethod
     def create(cls, title, desc, user, price, url, cat):
