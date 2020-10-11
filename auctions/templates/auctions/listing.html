@@ -23,8 +23,17 @@
 
     Price: {{ listing.price }}
 
-    {% if listing_owner %}
+    {% if listing_owner and listing.active %}
         <h2>Close the auction</h2>
+        <form action="{% url 'auctions:closeListing' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="hidden" name="close" value=True>
+                <input type="hidden" name="listingID" value="{{listing.id}}">
+                <input type="hidden" name="user" value="{{listing.user.id}}">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Close Auction">
+        </form>
     {% else %}
         {% if listing.active %}
             <form action="{% url 'auctions:bid' %}" method="post">

@@ -89,6 +89,38 @@ def listing(request, listing_id):
 
 
 @login_required(login_url='/accounts/login/')
+def closeListing(request):
+    if request.method=="POST":
+        id_user_listing = request.POST["user"]
+        listing_id = request.POST["listingID"]
+        close_listing = request.POST["close"]
+
+        user_bidding = request.user
+
+        '''
+        print("close_listing:",close_listing)
+        print("close_listing boolean check:",close_listing == "True")
+        print("id boolean check:", id_user_listing == user_bidding.id)
+
+        print("id of listing user:", id_user_listing, ", id of bidding user", user_bidding.id)
+
+        print("listing: ", type(id_user_listing), ", bidding:", type(user_bidding.id))
+        '''
+
+        listing = Auction.objects.get(pk=listing_id)
+
+        if int(id_user_listing) == user_bidding.id and bool(close_listing):
+            listing.active = False
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "in_watchlist": user_bidding in listing.watchlist.all(),
+                "listing_owner": listing.user.id == request.user.id
+            })
+
+    return HttpResponseRedirect(reverse("auctions:listing", args=(request.POST["listingID"],)))
+
+
+@login_required(login_url='/accounts/login/')
 def categories(request):
     pass
 
