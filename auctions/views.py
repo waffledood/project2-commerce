@@ -111,6 +111,8 @@ def closeListing(request):
 
         if int(id_user_listing) == user_bidding.id and bool(close_listing):
             listing.active = False
+            listing.save() 
+            
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "in_watchlist": user_bidding in listing.watchlist.all(),
