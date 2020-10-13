@@ -10,14 +10,22 @@ from django.contrib.auth.decorators import login_required
 
 from .models import User, Auction, Comment, Bid
 
-userGlobal = None
+#userGlobal = None
+
+FAVORITE_COLORS_CHOICES = [
+    ('blue', 'Blue'),
+    ('green', 'Green'),
+    ('black', 'Black'),
+]
 
 class NewListing(forms.Form):
     title = forms.CharField(label="Auction Title")
     description = forms.CharField(label="Auction Description", widget=forms.Textarea)
     price = forms.IntegerField(min_value=0)
     picture = forms.URLField()
-    category = forms.CharField(max_length=32)
+    #category = forms.CharField(max_length=32)
+    #category = forms.ChoiceField(required=False, widget=forms.Select, choices=FAVORITE_COLORS_CHOICES)
+    category = forms.ChoiceField(required=False, widget=forms.Select, choices=Auction.CATEGORIES_CHOICES)
 
 
 def index(request):
@@ -211,7 +219,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        userGlobal = user 
+        #userGlobal = user 
 
         # Check if authentication successful
         if user is not None:

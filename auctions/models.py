@@ -16,6 +16,21 @@ class User(AbstractUser):
         return f"{self.username} ({self.id})"
 
 class Auction(models.Model):
+    BOOKS = 'Books'
+    AUTOMOBILE = 'Automobile'
+    TOYS = 'Toys'
+    FOOD = 'Food'
+    CLOTHING = 'Clothing'
+    OTHERS = 'Others'
+    CATEGORIES_CHOICES = [
+        (BOOKS, 'Books'),
+        (AUTOMOBILE, 'Automobile'),
+        (TOYS, 'Toys'),
+        (FOOD, 'Food'),
+        (CLOTHING, 'Clothing'),
+        (OTHERS, 'Others'),
+    ]
+
     title = models.CharField(max_length=32)
     #description = models.CharField(widget=forms.Textarea)
     #description = forms.CharField(widget=forms.Textarea) # this doesn't work, description doesn't show up in the admin interface
@@ -27,7 +42,7 @@ class Auction(models.Model):
     bid = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     bidder = models.ManyToManyField(User, blank=True, related_name="bidder")
     picture = models.URLField()
-    category = models.CharField(max_length=32)
+    category = models.CharField(max_length=32, choices=CATEGORIES_CHOICES, default=OTHERS)
     active = models.BooleanField(default=True) # the status of the listing, if it's active or not 
 
     @classmethod

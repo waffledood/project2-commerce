@@ -2,8 +2,6 @@
 
 {% block body %}
 
-    TODO 
-
     <form action="{% url 'auctions:createListing' %}" method="post">
         {% csrf_token %}
         {{ listing }}
