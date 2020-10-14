@@ -9,7 +9,15 @@
         <h2>Active Listings</h2>
         
         {% for auction in auctions %}
-            <li> <a href="{% url 'auctions:listing' auction.id %}">Auction {{ auction.id }}:</a> {{ auction.title }} by {{ auction.user }} for SGD${{ auction.price }} </li>
+            <div class="media">
+                <img src="{{ auction.picture }}" class="align-self-start mr-3" alt="">
+                <div class="media-body">
+                <h5 class="mt-0">{{ auction.title }}</h5>
+                <p>{{ auction.description }}</p>
+                <p></p>
+                </div>
+            </div>
+            <br>
         {% endfor %}
 
 
@@ -18,4 +26,9 @@
     
 {% endblock %}
 
-<!-- <a href="{% url 'auctions:createListing' %}">Create a Listing</a> -->
+
+<!--
+
+    <li> <a href="{% url 'auctions:listing' auction.id %}">Auction {{ auction.id }}:</a> {{ auction.title }} by {{ auction.user }} for SGD${{ auction.price }} </li>
+
+-->
