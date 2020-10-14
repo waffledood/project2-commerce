@@ -12,12 +12,6 @@ from .models import User, Auction, Comment, Bid
 
 #userGlobal = None
 
-FAVORITE_COLORS_CHOICES = [
-    ('blue', 'Blue'),
-    ('green', 'Green'),
-    ('black', 'Black'),
-]
-
 class NewListing(forms.Form):
     title = forms.CharField(label="Auction Title")
     description = forms.CharField(label="Auction Description", widget=forms.Textarea)
@@ -131,9 +125,25 @@ def closeListing(request):
 
 
 @login_required(login_url='/accounts/login/')
-def categories(request):
-    pass
+def categoriesMain(request):
+    return render(request, "auctions/categoriesMain.html", {
+        "categories": Auction.CATEGORIES_CHOICES
+    })
 
+@login_required(login_url='/accounts/login/')
+def categoriesIndv(request, category):
+    listings = Auction.objects.all()
+
+    relevantLisings = []
+
+    for listing in listings:
+        if listing.category == category:
+            relevantLisings.append(listing)
+    
+    return render(request, "auctions/categoriesIndv.html", {
+        "listings": relevantLisings,
+        "category": category
+    })
 
 @login_required(login_url='/accounts/login/')
 def bid(request):
