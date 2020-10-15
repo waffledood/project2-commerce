@@ -151,17 +151,23 @@ def bid(request):
     if request.method=="POST":
 
         bid = request.POST["Bid"]
-        user_listing = request.POST["user"]
+        user_listing_id = request.POST["user"]
         listing_id = request.POST["listingID"]
 
         user_bidding = request.user
 
-        print("user of listing:", user_listing)
+        print("user of listing:", user_listing_id)
         print("user bidding:", user_bidding)
 
         listing = Auction.objects.get(pk=listing_id)
 
         if float(bid) >= listing.price and float(bid) > listing.bid:
+
+            user_listing = User.objects.get(pk=user_listing_id)
+            user_listing.bid = float(bid)
+            user_listing.bidder = user_bidding
+            #user_listing.bidder.set(user_bidding) #issues
+            user_listing.save()
 
             return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 

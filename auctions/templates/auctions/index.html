@@ -12,7 +12,7 @@
             <div class="media">
                 <img src="{{ auction.picture }}" class="align-self-start mr-3" alt="">
                 <div class="media-body">
-                <h5 class="mt-0">{{ auction.title }}</h5>
+                <h5 class="mt-0"><a href="{% url 'auctions:listing' auction.id %}">{{ auction.title }}</a></h5>
                 <p>{{ auction.description }}</p>
                 <p></p>
                 </div>
