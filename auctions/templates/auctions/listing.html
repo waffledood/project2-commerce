@@ -51,6 +51,7 @@
             </form>
         {% else %}
             <h2>Listing closed</h2>
+            Auction won by: {{ listing.bidder }}
         {% endif %}
     {% endif %}
 
