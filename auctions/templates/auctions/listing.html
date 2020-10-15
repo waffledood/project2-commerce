@@ -21,7 +21,11 @@
 
     <br>
 
-    Price: {{ listing.price }}
+    {% if not listing.bid %}
+        Price: {{ listing.price }}
+    {% else %}
+        Price: {{ listing.bid }}
+    {% endif %}
 
     {% if listing_owner and listing.active %}
         <h2>Close the auction</h2>

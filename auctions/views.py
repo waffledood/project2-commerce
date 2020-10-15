@@ -163,11 +163,11 @@ def bid(request):
 
         if float(bid) >= listing.price and float(bid) > listing.bid:
 
-            user_listing = User.objects.get(pk=user_listing_id)
-            user_listing.bid = float(bid)
-            user_listing.bidder = user_bidding
+            #user_listing = Auction.objects.get(pk=user_listing_id)
+            listing.bid = float(bid)
+            listing.bidder = user_bidding
             #user_listing.bidder.set(user_bidding) #issues
-            user_listing.save()
+            listing.save()
 
             return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 
