@@ -40,7 +40,8 @@ class Auction(models.Model):
     watchlist = models.ManyToManyField(User, blank=True, related_name="watchlist")
     price = models.DecimalField(max_digits=5, decimal_places=2) # initial price
     bid = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    bidder = models.ManyToManyField(User, blank=True, related_name="bidder")
+    #bidder = models.ManyToManyField(User, blank=True, related_name="bidder")
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder")
     picture = models.URLField()
     category = models.CharField(max_length=32, choices=CATEGORIES_CHOICES, default=OTHERS)
     active = models.BooleanField(default=True) # the status of the listing, if it's active or not 
