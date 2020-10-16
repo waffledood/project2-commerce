@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.forms import widgets
 from django import forms
-
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 class User(AbstractUser):
     # check 0001_initial.py for other fields in User
@@ -14,6 +14,21 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.id})"
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comments")
+    listing_id = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    comment = models.TextField(max_length=None)
+
+    @classmethod
+    def create(cls, user, listing_id, comment):
+        comment_item = cls(user=user, listing_id=listing_id, comment=comment)
+        return comment_item
+
+    def __str__(self):
+        return f"{self.comment}"
+
 
 class Auction(models.Model):
     BOOKS = 'Books'
@@ -45,15 +60,14 @@ class Auction(models.Model):
     picture = models.URLField()
     category = models.CharField(max_length=32, choices=CATEGORIES_CHOICES, default=OTHERS)
     active = models.BooleanField(default=True) # the status of the listing, if it's active or not 
+    #comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="comment_made")
+    #comment = models.ManyToManyField(Comment, blank=True, related_name="comment_made")
 
     @classmethod
     def create(cls, title, desc, user, price, url, cat):
         listing = cls(title=title, description=desc, user=user, price=price, picture=url, category=cat)
         return listing 
 
-
-class Comment(models.Model):
-    pass
 
 class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")

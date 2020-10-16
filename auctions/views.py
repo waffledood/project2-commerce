@@ -22,6 +22,9 @@ class NewListing(forms.Form):
     category = forms.ChoiceField(required=False, widget=forms.Select, choices=Auction.CATEGORIES_CHOICES)
 
 
+class NewComment(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea)
+
 def index(request):
     return render(request, "auctions/index.html", {
         "auctions": Auction.objects.all()
@@ -70,6 +73,41 @@ def createListing(request):
     })
 
 
+@login_required()
+def comment(request):
+    if request.method == "POST":
+        comment_text = request.POST["comment"]
+        id_user_listing = request.POST["user"]
+        listing_id = request.POST["listingID"]
+
+        user_bidding = request.user
+        
+        comment_by_bidder = Comment.create(user_bidding, listing_id, comment_text)
+        comment_by_bidder.save()
+
+        listing = Auction.objects.get(pk=listing_id)
+        
+        comments = Comment.objects.all()
+
+        ls = [x for x in comments if x.listing_id == int(listing_id)]
+
+        print(ls)
+
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "in_watchlist": user_bidding in listing.watchlist.all(),
+            "listing_owner": listing.user.id == request.user.id,
+            "comment_form": NewComment(),
+            "comments": ls
+        })
+
+        #return HttpResponseRedirect(reverse("auctions:index"))
+    return render(request, "auctions/listing.html", {
+        "comment_form": NewComment(),
+        "bool": True
+    })
+
+
 @login_required(login_url='/accounts/login/')
 def listing(request, listing_id):
 
@@ -86,7 +124,8 @@ def listing(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "in_watchlist": in_watchlist,
-        "listing_owner": listing.user.id == request.user.id
+        "listing_owner": listing.user.id == request.user.id,
+        "comment_form": NewComment()
     })
 
 
