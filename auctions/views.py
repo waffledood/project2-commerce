@@ -108,6 +108,7 @@ def comment(request):
     })
 
 
+
 @login_required(login_url='/accounts/login/')
 def listing(request, listing_id):
 
